@@ -20,6 +20,14 @@ const activeRequestsGauge = new client.Gauge({
     help: 'Number of active requests'
 })
 
+//histogram for res handler time taken
+const httpRequestDurationMicroseconds = new client.Histogram({
+    name: 'http_request_duration_ms',
+    help: 'Duration of HTTP requests in ms',
+    labelNames: ['method', 'route', 'status_code'],
+    buckets: [0.1, 5, 15, 50, 100, 300, 500, 1000, 3000, 5000] // Define your own buckets here
+});
+
 app.prepare()
 .then(()=>{
 
@@ -52,7 +60,7 @@ app.prepare()
                 const endTime = Date.now();
     
                 //Total time taken in ms took for handling a req 
-                const totalTime = endTime - startTime;
+                const timeTaken = endTime - startTime;
     
                 //inc the total req
                 requestCounter.inc({
@@ -61,10 +69,17 @@ app.prepare()
                     status_code:res.statusCode
                 })
 
+                //put the timeTaken in the appropriate
+                httpRequestDurationMicroseconds.observe({
+                    method:req.method,
+                    route:pathname,
+                    status_code:res.statusCode
+                },timeTaken);
+
                 //dec the gauge
                 activeRequestsGauge.dec();
-                
-                console.log(`${pathname} and the status ${res.statusCode}`);
+
+                console.log(`${pathname} took ${timeTaken}ms and it's status ${res.statusCode}`);
     
                 
             })
