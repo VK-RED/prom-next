@@ -1,0 +1,13 @@
+services:
+  next-app:
+    build: ./
+    ports:
+      - "3001:3001"
+
+  prometheus:
+    image: prom/prometheus:latest
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    
