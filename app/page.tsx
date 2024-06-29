@@ -1,6 +1,38 @@
+"use client";
+
 import Image from "next/image";
+import { useEffect } from "react";
 
 export default function Home() {
+
+
+  useEffect(()=>{
+    const getTestData = async() => {
+      const res = await fetch(`http://localhost:3001/api/test`);
+      const data = await res.json();
+      console.log(`The data from test route is ${data}`);
+    }
+
+    const getUserData  = async() => {
+      const res = await fetch(`http://localhost:3001/api/user`);
+      const data = await res.json();
+      console.log(`The data from user route is ${data}`);
+    } 
+
+    const testInterval = setInterval(()=>{
+      getTestData();
+    },10000);
+
+    const userInterval = setInterval(()=>{
+      getUserData();
+    },5000)
+
+    return ()=>{
+      clearInterval(testInterval);
+      clearInterval(userInterval);
+    }
+  },[])
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
