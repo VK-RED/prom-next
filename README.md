@@ -21,9 +21,9 @@ After running the command, you'll see a
 - Prometheus application running at [http://localhost:9090/](http://localhost:9090/)
 - Grafana application running at [http://localhost:3002/](http://localhost:3002/) 
 
-   You can login to Grafana with the following credentials
-      - email : `admin`
-      - password : `admin`
+   You can login to Grafana with the following credentials:
+   - email : `admin`
+   - password : `admin`
 
 	You can also visit [http://localhost:3001/metrics](http://localhost:3001/metrics) to see the dumped data
    ![Screenshot from 2024-06-29 12-47-04](https://github.com/VK-RED/prom-next/assets/130341088/b1a6de9d-acbf-4ab1-999f-157a1ce50aea)
